@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this to src/index.css */
+body {
+  font-family: "YourFontName", sans-serif;
+}
+
+/* Optional: Add this to src/index.css if needed for further custom styling */
+.nav-link.active {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-link .rough-canvas {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: -1;
+}
