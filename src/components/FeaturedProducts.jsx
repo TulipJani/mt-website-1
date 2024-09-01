@@ -720,7 +720,10 @@ import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import "../index.css";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
 const images = [
   {
     src: "https://media.istockphoto.com/id/1478708775/photo/full-length-of-serious-focused-mid-adult-male-professional-dressed-in-casual-working-over.jpg?s=612x612&w=0&k=20&c=WBeMJfYQFzPEEsiv2oSsDs9Au4PazUdn5eK11PIcFEM=",
@@ -739,40 +742,54 @@ const images = [
   },
   // Add more images as needed
 ];
-
 const FeaturedProducts = () => {
   const scrollRef = useRef(null);
-  const infiniteImages = [...images, ...images, ...images]; // Triplicate the images to create an illusion of infinite scroll
-
+  const titleRef = useRef(null);
+  const infiniteImages = [...images, ...images, ...images];
   useEffect(() => {
     const scrollElement = scrollRef.current;
     if (!scrollElement) return;
 
-    // Set initial scroll position to the middle section
     const initialScrollPosition = scrollElement.scrollWidth / 3;
     scrollElement.scrollLeft = initialScrollPosition;
 
-    // Auto-scroll logic for infinite scrolling
-    const scrollSpeed = 0.5; // Adjust the speed here (lower value = faster speed)
+    const scrollSpeed = 2;
     const scrollInterval = setInterval(() => {
       if (scrollElement.scrollLeft <= 0) {
-        // Reset to the far right to create a continuous loop
         scrollElement.scrollLeft = scrollElement.scrollWidth / 3;
       } else {
-        // Scroll to the left
         scrollElement.scrollLeft -= scrollSpeed;
       }
-    }, 10); // Adjust the interval time for scroll speed
+    }, 10);
 
-    // Clean up interval on component unmount
+    gsap.fromTo(
+      titleRef.current,
+      { x: -200, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: "top center",
+          end: "top+=100 center",
+          scrub: 1,
+        },
+      }
+    );
+
     return () => {
       clearInterval(scrollInterval);
     };
   }, []);
 
   return (
-    <div className="relative flex flex-col items-center pt-[3.5rem] bg-white">
-      <h2 className="text-3xl font-bold mb-2 pb-5">Featured Products</h2>
+    <div className="relative flex flex-col items-start pt-[3.5rem] bg-white">
+      <h2
+        ref={titleRef}
+        className="text-6xl uppercase text-left w-fit tracking-wider font-bold mb-2 p-12 pt-0"
+      >
+        Featured Products
+      </h2>
       <div className="relative flex overflow-hidden">
         <motion.div
           ref={scrollRef}
