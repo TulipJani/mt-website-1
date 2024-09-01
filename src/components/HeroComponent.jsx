@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import "../index.css";
 
 const HeroSection = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.section
-      className={`relative h-screen flex items-center justify-center bg-gray-100 ${
+      className={`relative h-screen flex items-center justify-center bg-gray-100 no-scrollbar ${
         isHovered ? "bg-teal-700 duration-500" : ""
       }`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={"text-center z-10"}>
+      <div className={"text-center z-10"} id="hero-section">
         <h1
           className={`text-4xl md:text-6xl font-semibold mb-4 ml-6 transition-colors duration-300 ${
             isHovered ? "text-white duration-300" : "text-white"
